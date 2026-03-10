@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Life Pepper — LP Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@200;300&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: #0d1b2a;
+    color: #f5f0e8;
+    font-family: 'Cormorant Garamond', serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+  }
+  .badge {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: #C89850;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  h1 {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+    font-weight: 300;
+    text-align: center;
+    line-height: 1.2;
+    margin-bottom: 0.8rem;
+  }
+  .sub {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: #8A9BAA;
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+  .cards {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 900px;
+  }
+  .card {
+    background: #1B2A3A;
+    border-radius: 4px;
+    overflow: hidden;
+    width: 260px;
+    text-decoration: none;
+    color: inherit;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  }
+  .card:hover { transform: translateY(-6px); box-shadow: 0 12px 40px rgba(0,0,0,0.4); }
+  .card-top {
+    height: 5px;
+  }
+  .card-body { padding: 1.5rem; }
+  .card-name {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 300;
+    font-size: 1.3rem;
+    margin-bottom: 0.4rem;
+  }
+  .card-sub {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: #8A9BAA;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+  .card-quote {
+    font-style: italic;
+    font-size: 0.9rem;
+    color: #B8C5D0;
+    line-height: 1.6;
+  }
+  .card-btn {
+    display: block;
+    margin: 1.2rem 0 0.2rem;
+    padding: 0.6rem 1.2rem;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: opacity 0.2s;
+  }
+  .card-btn:hover { opacity: 0.8; }
+  footer {
+    margin-top: 4rem;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: rgba(138,155,170,0.5);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <p class="badge">Life Pepper × インバウンド LP Demo</p>
+  <h1>紹介LP デモサイト</h1>
+  <p class="sub">グッズ付きQRで繋がる、パーソナル招待ページ</p>
+
+  <div class="cards">
+    <a class="card" href="hanamura-lp-mockup.html">
+      <div class="card-top" style="background:#C89850"></div>
+      <div class="card-body">
+        <p class="card-name">花紫</p>
+        <p class="card-sub">Yamana Onsen · Ishikawa</p>
+        <p class="card-quote">"A cup of matcha. A quiet room.<br>Japan, as it was meant to be felt."</p>
+        <span class="card-btn" style="background:#C89850;color:#0d1b2a">View LP →</span>
+      </div>
+    </a>
+    <a class="card" href="nishioka-lp-mockup.html">
+      <div class="card-top" style="background:#8B2020"></div>
+      <div class="card-body">
+        <p class="card-name">鮨 にし岡</p>
+        <p class="card-sub">Takanawa Gateway · Tokyo</p>
+        <p class="card-quote">"6 seats. One chef.<br>The philosophy of a lifetime."</p>
+        <span class="card-btn" style="background:#8B2020;color:#f5f0e8">View LP →</span>
+      </div>
+    </a>
+    <a class="card" href="mocha-lp-mockup.html">
+      <div class="card-top" style="background:#C87840"></div>
+      <div class="card-body">
+        <p class="card-name">猫カフェ MOCHA</p>
+        <p class="card-sub">36 locations · Tokyo, Japan</p>
+        <p class="card-quote">"20 cats. Zero stress.<br>Pure Tokyo."</p>
+        <span class="card-btn" style="background:#C87840;color:#0d1b2a">View LP →</span>
+      </div>
+    </a>
+  </div>
+
+  <footer>Life Pepper Inc. — Inbound LP Demo · 2025</footer>
+</body>
+</html>

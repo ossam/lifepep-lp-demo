@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>花紫 — A Gift from Your Friend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+JP:wght@200;300&family=IM+Fell+English:ital@1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1612;
+    --washi: #f4f0e8;
+    --mist: #c8bfb0;
+    --moss: #4a5240;
+    --gold: #b8995a;
+    --water: #7a9196;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--ink);
+    color: var(--washi);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Animated water background */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 30% 70%, #2a3d3f 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 70% 30%, #1e2a1e 0%, transparent 60%),
+      linear-gradient(170deg, #0d1410 0%, #1a1e1a 40%, #151b1f 100%);
+    animation: waterShift 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes waterShift {
+    0%   { filter: hue-rotate(0deg) brightness(1); }
+    100% { filter: hue-rotate(8deg) brightness(1.08); }
+  }
+
+  /* Ripple rings */
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(122,145,150,0.15);
+    animation: rippleOut 8s ease-out infinite;
+  }
+  .ripple:nth-child(1) { width: 300px; height: 300px; top: 55%; left: 25%; animation-delay: 0s; }
+  .ripple:nth-child(2) { width: 500px; height: 500px; top: 50%; left: 20%; animation-delay: 2s; }
+  .ripple:nth-child(3) { width: 700px; height: 700px; top: 45%; left: 15%; animation-delay: 4s; }
+
+  @keyframes rippleOut {
+    0%   { transform: translate(-50%,-50%) scale(0.6); opacity: 0.4; }
+    100% { transform: translate(-50%,-50%) scale(1.2); opacity: 0; }
+  }
+
+  /* Vertical Japanese characters */
+  .jp-deco {
+    position: absolute;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.3em;
+    color: rgba(200,191,176,0.2);
+    writing-mode: vertical-rl;
+    top: 15%;
+    animation: fadeInSlow 4s ease forwards;
+    opacity: 0;
+  }
+  .jp-deco.left  { left: 5%; animation-delay: 2s; }
+  .jp-deco.right { right: 5%; animation-delay: 3s; }
+
+  @keyframes fadeInSlow {
+    to { opacity: 1; }
+  }
+
+  /* Gift tag */
+  .gift-tag {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0;
+    animation: fadeUp 1s ease 0.5s forwards;
+    margin-bottom: 2rem;
+  }
+
+  .hero-name {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 3vw, 1.4rem);
+    color: var(--mist);
+    opacity: 0;
+    animation: fadeUp 1s ease 1s forwards;
+    margin-bottom: 3rem;
+    text-align: center;
+    padding: 0 2rem;
+  }
+
+  .hero-name em {
+    color: var(--washi);
+    font-style: normal;
+    border-bottom: 1px solid var(--gold);
+    padding-bottom: 1px;
+  }
+
+  .hero-title {
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 1.6s forwards;
+  }
+
+  .hero-title .en {
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    display: block;
+  }
+
+  .hero-title .jp {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: clamp(0.8rem, 2vw, 1rem);
+    letter-spacing: 0.6em;
+    color: var(--mist);
+    display: block;
+    margin-top: 1rem;
+  }
+
+  .hero-tagline {
+    font-style: italic;
+    font-size: clamp(0.9rem, 2vw, 1.15rem);
+    color: var(--mist);
+    text-align: center;
+    max-width: 480px;
+    line-height: 1.9;
+    padding: 0 2rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 2.4s forwards;
+    margin-top: 2.5rem;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1s ease 3.5s forwards;
+  }
+
+  .scroll-hint span {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: var(--mist);
+    text-transform: uppercase;
+  }
+
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  /* ── DIVIDER ── */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 10%;
+    margin: 4rem 0;
+  }
+  .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, var(--gold), transparent); }
+  .divider-mark {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+  }
+
+  /* ── SECTION: EXPERIENCE ── */
+  .section-exp {
+    padding: 6rem 8% 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .section-exp { grid-template-columns: 1fr; gap: 3rem; }
+  }
+
+  .exp-label {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.6em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+
+  .exp-heading {
+    font-size: clamp(2rem, 5vw, 3.2rem);
+    font-weight: 300;
+    line-height: 1.2;
+    margin-bottom: 1.5rem;
+  }
+
+  .exp-heading em {
+    font-style: italic;
+    color: var(--mist);
+  }
+
+  .exp-body {
+    font-size: 1.05rem;
+    line-height: 2;
+    color: var(--mist);
+    font-weight: 300;
+  }
+
+  /* Photo mosaic */
+  .photo-mosaic {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 200px 200px;
+    gap: 8px;
+  }
+
+  .photo-cell {
+    border-radius: 2px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .photo-cell:first-child {
+    grid-row: span 2;
+  }
+
+  .photo-cell .photo-inner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s ease;
+  }
+
+  .photo-cell:hover .photo-inner {
+    transform: scale(1.04);
+  }
+
+  /* Color-coded photo placeholders representing actual scenes */
+  .photo-cell:nth-child(1) .photo-inner {
+    background: linear-gradient(145deg, #1e3028 0%, #2d4a3a 40%, #1a2820 100%);
+    display: flex; align-items: flex-end; padding: 1.2rem;
+  }
+  .photo-cell:nth-child(2) .photo-inner {
+    background: linear-gradient(145deg, #2a1e18 0%, #3d2e24 100%);
+    display: flex; align-items: flex-end; padding: 1rem;
+  }
+  .photo-cell:nth-child(3) .photo-inner {
+    background: linear-gradient(145deg, #1a2535 0%, #263545 100%);
+    display: flex; align-items: flex-end; padding: 1rem;
+  }
+
+  .photo-caption {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: rgba(244,240,232,0.5);
+    text-transform: uppercase;
+  }
+
+  /* Tall photo placeholder text */
+  .photo-scene {
+    font-style: italic;
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: rgba(244,240,232,0.08);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+  }
+
+  /* ── GIFT SECTION ── */
+  .section-gift {
+    background: linear-gradient(170deg, #0e1812 0%, #131a10 100%);
+    padding: 6rem 8%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-gift::before {
+    content: '花';
+    position: absolute;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 300px;
+    font-weight: 200;
+    color: rgba(74,82,64,0.07);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .gift-icon {
+    width: 60px;
+    height: 60px;
+    border: 1px solid var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+  }
+
+  .gift-icon svg { stroke: var(--gold); }
+
+  .gift-heading {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 300;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .gift-heading em {
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  .gift-desc {
+    font-size: 1.05rem;
+    line-height: 2;
+    color: var(--mist);
+    max-width: 500px;
+    margin: 0 auto 3rem;
+  }
+
+  /* ── CTA ── */
+  .cta-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 1.1rem 3.5rem;
+    background: var(--gold);
+    color: var(--ink);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    letter-spacing: 0.25em;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    border: none;
+  }
+
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--washi);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+  }
+
+  .cta-btn:hover::before { transform: translateX(0); }
+  .cta-btn span { position: relative; z-index: 1; }
+
+  .cta-badge {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--water);
+    text-transform: uppercase;
+  }
+
+  /* ── DETAILS STRIP ── */
+  .details-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0;
+    border-top: 1px solid rgba(200,191,176,0.1);
+    border-bottom: 1px solid rgba(200,191,176,0.1);
+  }
+
+  @media (max-width: 600px) {
+    .details-strip { grid-template-columns: 1fr; }
+  }
+
+  .detail-item {
+    padding: 3rem 2rem;
+    text-align: center;
+    border-right: 1px solid rgba(200,191,176,0.1);
+    transition: background 0.3s ease;
+  }
+  .detail-item:last-child { border-right: none; }
+  .detail-item:hover { background: rgba(184,153,90,0.04); }
+
+  .detail-num {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .detail-label {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--mist);
+    text-transform: uppercase;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 3rem 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(200,191,176,0.08);
+  }
+
+  .footer-brand {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 13px;
+    letter-spacing: 0.5em;
+    color: var(--mist);
+  }
+
+  .footer-note {
+    font-size: 0.75rem;
+    color: rgba(200,191,176,0.4);
+    letter-spacing: 0.1em;
+    font-style: italic;
+  }
+
+  /* ── LANG SWITCHER ── */
+  .lang-bar {
+    position: fixed;
+    top: 1.5rem;
+    right: 2rem;
+    display: flex;
+    gap: 1rem;
+    z-index: 100;
+    opacity: 0;
+    animation: fadeIn 1s ease 3s forwards;
+  }
+
+  .lang-btn {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: rgba(200,191,176,0.5);
+    cursor: pointer;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    text-transform: uppercase;
+  }
+
+  .lang-btn:hover, .lang-btn.active { color: var(--gold); }
+</style>
+</head>
+<body>
+
+<!-- Language switcher -->
+<nav class="lang-bar">
+  <button class="lang-btn active">EN</button>
+  <button class="lang-btn">中</button>
+  <button class="lang-btn">한</button>
+  <button class="lang-btn">FR</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+  <div class="ripple"></div>
+
+  <span class="jp-deco left">山中温泉　花紫　鶴仙渓</span>
+  <span class="jp-deco right">茶房　湯　食　静</span>
+
+  <p class="gift-tag">A personal invitation</p>
+
+  <p class="hero-name">
+    <em>Sarah</em> wants to give you a moment of stillness.
+  </p>
+
+  <div class="hero-title">
+    <span class="en">花紫</span>
+    <span class="jp">Hana-Mura — Yamana Onsen, Japan</span>
+  </div>
+
+  <p class="hero-tagline">
+    A cup of matcha. A quiet room.<br>
+    Japan, as it was meant to be felt.
+  </p>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Discover</span>
+  </div>
+</section>
+
+<!-- EXPERIENCE SECTION -->
+<section class="section-exp">
+  <div>
+    <p class="exp-label">The Experience</p>
+    <h2 class="exp-heading">
+      Where the river<br>
+      <em>never hurries</em>
+    </h2>
+    <p class="exp-body">
+      Tucked into the gorge of Kakusenkei, 花紫 is a ryokan unlike any other.
+      Private hot springs carved from stone. A tea room where time slows.
+      Meals composed from Kaga's ancient harvest — each dish a quiet ceremony.
+    </p>
+  </div>
+
+  <div class="photo-mosaic">
+    <div class="photo-cell">
+      <div class="photo-inner">
+        <span class="photo-scene">湯</span>
+        <span class="photo-caption">Private Onsen</span>
+      </div>
+    </div>
+    <div class="photo-cell">
+      <div class="photo-inner">
+        <span class="photo-scene">茶</span>
+        <span class="photo-caption">Tea Room</span>
+      </div>
+    </div>
+    <div class="photo-cell">
+      <div class="photo-inner">
+        <span class="photo-scene">食</span>
+        <span class="photo-caption">Kaga Cuisine</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <span class="divider-mark">◆</span>
+  <div class="divider-line"></div>
+</div>
+
+<!-- DETAILS STRIP -->
+<div class="details-strip">
+  <div class="detail-item">
+    <span class="detail-num">400</span>
+    <span class="detail-label">Years of Craftsmanship</span>
+  </div>
+  <div class="detail-item">
+    <span class="detail-num">5★</span>
+    <span class="detail-label">Luxury Ryokan</span>
+  </div>
+  <div class="detail-item">
+    <span class="detail-num">∞</span>
+    <span class="detail-label">Moments of Stillness</span>
+  </div>
+</div>
+
+<!-- GIFT / CTA SECTION -->
+<section class="section-gift">
+  <div class="gift-icon">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke-width="1.2">
+      <path d="M12 2C8 2 6 5 6 7h12c0-2-2-5-6-5z"/>
+      <rect x="3" y="7" width="18" height="4" rx="1"/>
+      <path d="M5 11v10h14V11"/>
+      <line x1="12" y1="7" x2="12" y2="21"/>
+    </svg>
+  </div>
+
+  <h2 class="gift-heading">
+    Sarah's gift to you:<br>
+    <em>A Welcome Matcha Ceremony</em>
+  </h2>
+
+  <p class="gift-desc">
+    When you arrive, the tea room will be waiting.
+    A private 15-minute matcha experience — prepared by hand, offered in silence.
+    This is available exclusively through Sarah's invitation.
+  </p>
+
+  <div class="cta-wrap">
+    <button class="cta-btn"><span>Reserve Your Stay</span></button>
+    <span class="cta-badge">✦ Welcome Matcha Ceremony Included</span>
+  </div>
+</section>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <span class="divider-mark">花</span>
+  <div class="divider-line"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-brand">花紫　Hana-Mura</span>
+  <span class="footer-note">Shared with love by Sarah · Yamana Onsen, Ishikawa</span>
+</footer>
+
+<script>
+  // Language switcher (demo)
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  // Subtle parallax on scroll
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    const bg = document.querySelector('.hero-bg');
+    if (bg) bg.style.transform = `translateY(${y * 0.3}px)`;
+  });
+</script>
+</body>
+</html>

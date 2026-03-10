@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>鮨 にし岡 — An Invitation from Your Friend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Noto+Serif+JP:wght@200;300&family=Playfair+Display:ital,wght@1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:   #0a0907;
+    --charcoal:#161412;
+    --stone:   #2a2520;
+    --ash:     #5a5248;
+    --silver:  #b0a898;
+    --cream:   #f0ebe0;
+    --red:     #8b1a1a;
+    --gold:    #c4a35a;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    overflow-x: hidden;
+    cursor: crosshair;
+  }
+
+  /* ── LANG BAR ── */
+  .lang-bar {
+    position: fixed;
+    top: 1.5rem;
+    right: 2rem;
+    display: flex;
+    gap: 1.2rem;
+    z-index: 100;
+    opacity: 0;
+    animation: fadeIn 1s ease 4s forwards;
+  }
+  .lang-btn {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: rgba(176,168,152,0.5);
+    cursor: pointer;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+    text-transform: uppercase;
+  }
+  .lang-btn:hover, .lang-btn.active { color: var(--gold); }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh;
+    min-height: 640px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: var(--black);
+  }
+
+  /* Knife sound visual — single horizontal line that "cuts" */
+  .cut-line {
+    position: absolute;
+    top: 50%;
+    left: -100%;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--silver), transparent);
+    animation: cutAcross 1.2s cubic-bezier(0.4,0,0.2,1) 0.4s forwards;
+    opacity: 0;
+  }
+
+  @keyframes cutAcross {
+    0%   { left: -100%; opacity: 0; }
+    10%  { opacity: 0.6; }
+    90%  { opacity: 0.4; }
+    100% { left: 100%; opacity: 0; }
+  }
+
+  /* Counter surface texture */
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 40% 30% at 50% 80%, rgba(42,37,32,0.8) 0%, transparent 70%),
+      linear-gradient(180deg, #0a0907 0%, #0e0c0a 50%, #0a0907 100%);
+  }
+
+  /* Subtle grain */
+  .hero-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 2rem;
+  }
+
+  .invitation-tag {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1.8s forwards;
+    margin-bottom: 2.5rem;
+  }
+
+  .friend-line {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    color: var(--silver);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2.3s forwards;
+    margin-bottom: 3rem;
+    line-height: 1.7;
+  }
+
+  .friend-line strong {
+    color: var(--cream);
+    font-style: normal;
+    font-weight: 400;
+    border-bottom: 1px solid rgba(196,163,90,0.5);
+    padding-bottom: 1px;
+  }
+
+  .hero-title {
+    opacity: 0;
+    animation: fadeUp 1s ease 3s forwards;
+    margin-bottom: 1rem;
+  }
+
+  .hero-title .kanji {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: clamp(4rem, 14vw, 10rem);
+    letter-spacing: 0.15em;
+    line-height: 1;
+    display: block;
+    color: var(--cream);
+  }
+
+  .hero-title .roman {
+    font-size: clamp(0.75rem, 1.5vw, 0.9rem);
+    letter-spacing: 0.6em;
+    color: var(--ash);
+    text-transform: uppercase;
+    display: block;
+    margin-top: 0.8rem;
+  }
+
+  .hero-tagline {
+    font-style: italic;
+    font-size: clamp(0.9rem, 1.8vw, 1.1rem);
+    color: var(--silver);
+    line-height: 2;
+    max-width: 460px;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 3.8s forwards;
+    margin-top: 2rem;
+  }
+
+  /* Red accent dot */
+  .red-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--red);
+    border-radius: 50%;
+    margin: 2.5rem auto 0;
+    opacity: 0;
+    animation: fadeIn 0.5s ease 4.5s forwards;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    opacity: 0;
+    animation: fadeIn 1s ease 5s forwards;
+  }
+  .scroll-hint span {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--ash);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--gold), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+
+  /* ── PHILOSOPHY SECTION ── */
+  .section-philosophy {
+    padding: 8rem 8% 6rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 6rem;
+    align-items: start;
+    border-top: 1px solid rgba(90,82,72,0.3);
+  }
+
+  @media (max-width: 768px) {
+    .section-philosophy { grid-template-columns: 1fr; gap: 3rem; }
+  }
+
+  .phil-label-block {
+    position: sticky;
+    top: 6rem;
+  }
+
+  .section-num {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .section-label {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--cream);
+  }
+
+  .section-label em {
+    font-style: italic;
+    color: var(--silver);
+    display: block;
+  }
+
+  .phil-body {
+    padding-top: 0.5rem;
+  }
+
+  .phil-quote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.3rem, 3vw, 1.9rem);
+    line-height: 1.7;
+    color: var(--cream);
+    margin-bottom: 2rem;
+    padding-left: 1.5rem;
+    border-left: 2px solid var(--red);
+  }
+
+  .phil-text {
+    font-size: 1.05rem;
+    line-height: 2.1;
+    color: var(--silver);
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+
+  .chef-sig {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    color: var(--ash);
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(90,82,72,0.3);
+  }
+
+  /* ── SUSHI GALLERY ── */
+  .section-sushi {
+    padding: 0 8% 8rem;
+  }
+
+  .gallery-label {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.6em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
+    text-align: center;
+  }
+
+  .sushi-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-rows: 280px 200px;
+    gap: 6px;
+  }
+
+  @media (max-width: 768px) {
+    .sushi-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 220px 160px 160px;
+    }
+  }
+
+  .sushi-cell {
+    position: relative;
+    overflow: hidden;
+    background: var(--charcoal);
+    cursor: pointer;
+  }
+
+  .sushi-cell:first-child {
+    grid-row: span 2;
+  }
+
+  .sushi-inner {
+    width: 100%;
+    height: 100%;
+    transition: transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .sushi-cell:hover .sushi-inner {
+    transform: scale(1.05);
+  }
+
+  /* Sushi piece illustrations via CSS */
+  .sushi-cell:nth-child(1) .sushi-inner {
+    background: linear-gradient(160deg, #1a1410 0%, #0f0c0a 100%);
+  }
+  .sushi-cell:nth-child(2) .sushi-inner {
+    background: linear-gradient(160deg, #160f0f 0%, #0d0a09 100%);
+  }
+  .sushi-cell:nth-child(3) .sushi-inner {
+    background: linear-gradient(160deg, #0f1214 0%, #0a0d10 100%);
+  }
+  .sushi-cell:nth-child(4) .sushi-inner {
+    background: linear-gradient(160deg, #14100f 0%, #0d0b09 100%);
+  }
+  .sushi-cell:nth-child(5) .sushi-inner {
+    background: linear-gradient(160deg, #0f1410 0%, #0a0d0a 100%);
+  }
+
+  /* CSS sushi pieces */
+  .nigiri {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+  }
+
+  .nigiri-fish {
+    width: 90px;
+    height: 35px;
+    border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%;
+    position: relative;
+    z-index: 2;
+  }
+
+  .nigiri-rice {
+    width: 80px;
+    height: 40px;
+    background: rgba(240,235,224,0.9);
+    border-radius: 0 0 50% 50% / 0 0 40% 40%;
+    position: relative;
+    z-index: 1;
+    margin-top: -8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+
+  /* Tuna */
+  .fish-maguro { background: linear-gradient(135deg, #c0403a 0%, #8b1a1a 60%, #6b1515 100%); }
+  /* Salmon */
+  .fish-sake   { background: linear-gradient(135deg, #e06030 0%, #c04020 60%, #a03010 100%); }
+  /* Flounder */
+  .fish-hirame { background: linear-gradient(135deg, #d4c8b0 0%, #b8a890 60%, #9a8870 100%); }
+  /* Sea urchin */
+  .fish-uni    { background: linear-gradient(135deg, #d4a030 0%, #b08020 60%, #906010 100%); }
+
+  /* Gunkan */
+  .gunkan {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .gunkan-top {
+    width: 70px;
+    height: 28px;
+    background: linear-gradient(135deg, #c4901a 0%, #a07010 100%);
+    border-radius: 4px 4px 0 0;
+  }
+  .gunkan-nori {
+    width: 74px;
+    height: 36px;
+    background: linear-gradient(180deg, #1a1a16 0%, #0d0d0a 100%);
+    border: 1px solid rgba(255,255,255,0.05);
+  }
+  .gunkan-rice {
+    width: 68px;
+    height: 30px;
+    background: rgba(240,235,224,0.9);
+    border-radius: 0 0 4px 4px;
+  }
+
+  .sushi-label {
+    position: absolute;
+    bottom: 1.2rem;
+    left: 1.2rem;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: rgba(176,168,152,0.5);
+    text-transform: uppercase;
+    z-index: 3;
+  }
+
+  .sushi-jp {
+    position: absolute;
+    top: 1.2rem;
+    right: 1.2rem;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 14px;
+    color: rgba(176,168,152,0.15);
+    z-index: 3;
+  }
+
+  /* Photo placeholder overlay for large cell */
+  .photo-note {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 4;
+    pointer-events: none;
+  }
+
+  .photo-note-text {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: rgba(176,168,152,0.25);
+    display: block;
+    margin-top: 0.5rem;
+  }
+
+  /* ── DETAILS STRIP ── */
+  .details-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid rgba(90,82,72,0.3);
+    border-bottom: 1px solid rgba(90,82,72,0.3);
+  }
+  @media (max-width: 600px) {
+    .details-strip { grid-template-columns: 1fr; }
+  }
+  .detail-item {
+    padding: 3rem 2rem;
+    text-align: center;
+    border-right: 1px solid rgba(90,82,72,0.3);
+    transition: background 0.3s;
+  }
+  .detail-item:last-child { border-right: none; }
+  .detail-item:hover { background: rgba(196,163,90,0.03); }
+  .detail-num {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .detail-label {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--ash);
+    text-transform: uppercase;
+  }
+
+  /* ── CTA SECTION ── */
+  .section-cta {
+    padding: 8rem 8%;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-cta::before {
+    content: '鮨';
+    position: absolute;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 400px;
+    font-weight: 200;
+    color: rgba(42,37,32,0.15);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    line-height: 1;
+  }
+
+  .cta-eyebrow {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.6em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    display: block;
+  }
+
+  .cta-heading {
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 300;
+    line-height: 1.3;
+    margin-bottom: 1rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .cta-heading em {
+    font-style: italic;
+    color: var(--silver);
+  }
+
+  .cta-gift {
+    font-size: 1rem;
+    color: var(--silver);
+    line-height: 2;
+    max-width: 480px;
+    margin: 0 auto 3rem;
+  }
+
+  .cta-gift strong {
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  .cta-btn {
+    display: inline-block;
+    padding: 1.1rem 3.5rem;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: transparent;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cta-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.4s ease;
+    z-index: 0;
+  }
+
+  .cta-btn:hover::before { transform: scaleX(1); }
+  .cta-btn:hover { color: var(--black); }
+  .cta-btn span { position: relative; z-index: 1; }
+
+  .cta-note {
+    display: block;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: var(--ash);
+    margin-top: 1.2rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2.5rem 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(90,82,72,0.2);
+  }
+  .footer-brand {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 12px;
+    letter-spacing: 0.5em;
+    color: var(--ash);
+  }
+  .footer-note {
+    font-style: italic;
+    font-size: 0.75rem;
+    color: rgba(90,82,72,0.6);
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 8%;
+    margin: 2rem 0;
+  }
+  .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(90,82,72,0.4), transparent); }
+  .divider-mark {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    color: var(--ash);
+  }
+</style>
+</head>
+<body>
+
+<nav class="lang-bar">
+  <button class="lang-btn active">EN</button>
+  <button class="lang-btn">中</button>
+  <button class="lang-btn">한</button>
+  <button class="lang-btn">FR</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="cut-line"></div>
+  <div class="hero-bg"></div>
+
+  <div class="hero-content">
+    <span class="invitation-tag">A personal invitation</span>
+
+    <p class="friend-line">
+      <strong>James</strong> is offering you<br>
+      one of the hardest reservations in Tokyo.
+    </p>
+
+    <div class="hero-title">
+      <span class="kanji">鮨 にし岡</span>
+      <span class="roman">Sushi Nishioka — Takanawa Gateway, Tokyo</span>
+    </div>
+
+    <p class="hero-tagline">
+      6 seats. One chef.<br>
+      The philosophy of a lifetime.
+    </p>
+
+    <div class="red-dot"></div>
+  </div>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Enter</span>
+  </div>
+</section>
+
+<!-- PHILOSOPHY -->
+<section class="section-philosophy">
+  <div class="phil-label-block">
+    <span class="section-num">01 ── Philosophy</span>
+    <h2 class="section-label">
+      The land<br>
+      <em>feeds us all.</em>
+    </h2>
+  </div>
+
+  <div class="phil-body">
+    <blockquote class="phil-quote">
+      "We receive the lives nurtured by the earth.<br>
+      Every piece of sushi is a conversation<br>
+      between the sea, the soil, and the hand."
+    </blockquote>
+
+    <p class="phil-text">
+      Chef Nishioka has spent decades tracing ingredients to their source —
+      the farmers, the fishermen, the makers of each vessel on the counter.
+      At Sushi Nishioka, the omakase is not a menu. It is a philosophy,
+      assembled fresh each day from what the land offers.
+    </p>
+
+    <p class="phil-text">
+      Six counter seats. Complete silence in the kitchen.
+      A subterranean room beneath Takanawa Gateway,
+      where the city disappears and the meal becomes everything.
+    </p>
+
+    <div class="chef-sig">Chef Nishioka Hiroshi　にし岡 博　— Est. Takanawa, Tokyo</div>
+  </div>
+</section>
+
+<!-- SUSHI GALLERY -->
+<section class="section-sushi">
+  <p class="gallery-label">Today's Omakase — A glimpse</p>
+
+  <div class="sushi-grid">
+
+    <!-- Large feature cell -->
+    <div class="sushi-cell">
+      <div class="sushi-inner">
+        <div class="nigiri">
+          <div class="nigiri-fish fish-maguro" style="width:120px;height:48px;"></div>
+          <div class="nigiri-rice" style="width:110px;height:54px;"></div>
+        </div>
+        <span class="sushi-jp">鮪</span>
+      </div>
+      <div class="photo-note">
+        <span class="photo-note-text">Chef's photo here</span>
+      </div>
+      <span class="sushi-label">Hon-Maguro · Bluefin Tuna</span>
+    </div>
+
+    <!-- Salmon -->
+    <div class="sushi-cell">
+      <div class="sushi-inner">
+        <div class="nigiri">
+          <div class="nigiri-fish fish-sake"></div>
+          <div class="nigiri-rice"></div>
+        </div>
+        <span class="sushi-jp">鮭</span>
+      </div>
+      <span class="sushi-label">Sake · Salmon</span>
+    </div>
+
+    <!-- Hirame -->
+    <div class="sushi-cell">
+      <div class="sushi-inner">
+        <div class="nigiri">
+          <div class="nigiri-fish fish-hirame"></div>
+          <div class="nigiri-rice"></div>
+        </div>
+        <span class="sushi-jp">平目</span>
+      </div>
+      <span class="sushi-label">Hirame · Flounder</span>
+    </div>
+
+    <!-- Uni gunkan -->
+    <div class="sushi-cell">
+      <div class="sushi-inner">
+        <div class="gunkan">
+          <div class="gunkan-top"></div>
+          <div class="gunkan-nori"></div>
+          <div class="gunkan-rice"></div>
+        </div>
+        <span class="sushi-jp">雲丹</span>
+      </div>
+      <span class="sushi-label">Uni · Sea Urchin</span>
+    </div>
+
+    <!-- Ikura -->
+    <div class="sushi-cell">
+      <div class="sushi-inner" style="background: linear-gradient(160deg,#1a0f0a 0%,#0d0806 100%);">
+        <div style="display:flex;gap:4px;flex-wrap:wrap;width:64px;justify-content:center;">
+          <div style="width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e06030,#8b2010);box-shadow:0 0 6px rgba(224,96,48,0.3);"></div>
+          <div style="width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#d85020,#7b1808);box-shadow:0 0 6px rgba(216,80,32,0.3);"></div>
+          <div style="width:14px;height:14px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e87040,#9b3020);box-shadow:0 0 6px rgba(232,112,64,0.3);"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#d04818,#6b1006);margin-top:2px;"></div>
+          <div style="width:12px;height:12px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#e06828,#8b1a08);margin-top:2px;"></div>
+        </div>
+        <span class="sushi-jp">鮭児</span>
+      </div>
+      <span class="sushi-label">Ikura · Salmon Roe</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- DETAILS STRIP -->
+<div class="details-strip">
+  <div class="detail-item">
+    <span class="detail-num">6</span>
+    <span class="detail-label">Counter Seats Only</span>
+  </div>
+  <div class="detail-item">
+    <span class="detail-num">¥30K+</span>
+    <span class="detail-label">Omakase Experience</span>
+  </div>
+  <div class="detail-item">
+    <span class="detail-num">一期一会</span>
+    <span class="detail-label">Once in a Lifetime</span>
+  </div>
+</div>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <span class="divider-mark">鮨</span>
+  <div class="divider-line"></div>
+</div>
+
+<!-- CTA -->
+<section class="section-cta">
+  <span class="cta-eyebrow">James's Invitation to You</span>
+
+  <h2 class="cta-heading">
+    One extra piece.<br>
+    <em>The best the sea offered today.</em>
+  </h2>
+
+  <p class="cta-gift">
+    As a guest of James, Chef Nishioka will personally select one piece outside the omakase —
+    the finest ingredient of that day, chosen just for you.
+    <br><br>
+    <strong>No menu. No request. Just the chef's highest choice, offered in silence.</strong>
+    <br><br>
+    This is available exclusively through James's invitation.
+  </p>
+
+  <button class="cta-btn"><span>Request a Reservation</span></button>
+  <span class="cta-note">✦ Chef's Special Piece · Exclusive to This Invitation</span>
+</section>
+
+<footer>
+  <span class="footer-brand">鮨 にし岡　Sushi Nishioka</span>
+  <span class="footer-note">Shared by James · Takanawa Gateway, Tokyo</span>
+</footer>
+
+<script>
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    const bg = document.querySelector('.hero-bg');
+    if (bg) bg.style.transform = `translateY(${y * 0.2}px)`;
+  });
+</script>
+</body>
+</html>

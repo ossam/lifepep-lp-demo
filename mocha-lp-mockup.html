@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cat Cafe MOCHA — An Invitation from Your Friend</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,400;0,600;1,300&family=Noto+Serif+JP:wght@200;300&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:   #fdf8f2;
+    --warm:    #f5ede0;
+    --peach:   #f0c8a0;
+    --caramel: #c8845a;
+    --brown:   #6b3d28;
+    --mocha:   #3d2010;
+    --sage:    #8aaa88;
+    --blush:   #e8b8a8;
+    --gold:    #c89850;
+    --soft-shadow: rgba(107,61,40,0.12);
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--cream);
+    color: var(--mocha);
+    font-family: 'Nunito', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── LANG BAR ── */
+  .lang-bar {
+    position: fixed;
+    top: 1.2rem;
+    right: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    z-index: 100;
+    opacity: 0;
+    animation: fadeIn 1s ease 3.5s forwards;
+    background: rgba(253,248,242,0.9);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 12px var(--soft-shadow);
+  }
+  .lang-btn {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--caramel);
+    cursor: pointer;
+    transition: color 0.2s;
+    background: none;
+    border: none;
+  }
+  .lang-btn:hover, .lang-btn.active { color: var(--brown); font-weight: 600; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    background: linear-gradient(160deg, #fdf5ec 0%, #f8ede0 50%, #f2e4d4 100%);
+    padding: 4rem 2rem 6rem;
+  }
+
+  /* Floating paw prints */
+  .paw {
+    position: absolute;
+    opacity: 0;
+    animation: floatPaw 6s ease-in-out infinite;
+    font-size: 1.2rem;
+    pointer-events: none;
+    filter: sepia(1) saturate(0.3) opacity(0.15);
+  }
+  .paw:nth-child(1)  { top: 12%; left: 8%;  animation-delay: 0s;   font-size: 1rem; }
+  .paw:nth-child(2)  { top: 20%; right: 12%; animation-delay: 1.2s; font-size: 0.8rem; }
+  .paw:nth-child(3)  { top: 65%; left: 5%;  animation-delay: 2.4s; font-size: 1.4rem; }
+  .paw:nth-child(4)  { top: 75%; right: 8%; animation-delay: 0.8s; font-size: 0.9rem; }
+  .paw:nth-child(5)  { top: 40%; left: 3%;  animation-delay: 3s;   font-size: 0.7rem; }
+  .paw:nth-child(6)  { top: 85%; left: 30%; animation-delay: 1.8s; font-size: 1.1rem; }
+  .paw:nth-child(7)  { top: 10%; right: 35%;animation-delay: 2s;   font-size: 0.8rem; }
+
+  @keyframes floatPaw {
+    0%   { opacity: 0; transform: translateY(10px) rotate(-10deg); }
+    20%  { opacity: 0.15; }
+    80%  { opacity: 0.1; }
+    100% { opacity: 0; transform: translateY(-20px) rotate(10deg); }
+  }
+
+  .invite-tag {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.45em;
+    color: var(--caramel);
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 0.5s forwards;
+    margin-bottom: 1.5rem;
+  }
+
+  .friend-line {
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+    color: var(--brown);
+    opacity: 0;
+    animation: fadeUp 0.8s ease 1s forwards;
+    margin-bottom: 2.5rem;
+    text-align: center;
+    line-height: 1.8;
+  }
+  .friend-line strong {
+    color: var(--caramel);
+    font-weight: 600;
+    border-bottom: 2px dotted var(--peach);
+    padding-bottom: 1px;
+  }
+
+  /* Big cat face illustration */
+  .cat-hero {
+    opacity: 0;
+    animation: fadeUp 1s ease 1.5s forwards;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+
+  .cat-face {
+    width: 140px;
+    height: 130px;
+    position: relative;
+    margin: 0 auto;
+  }
+
+  /* Cat head */
+  .cat-head {
+    width: 120px;
+    height: 110px;
+    background: linear-gradient(160deg, #e8c898 0%, #d4a870 100%);
+    border-radius: 50% 50% 45% 45%;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    bottom: 0;
+    box-shadow: 0 8px 30px rgba(107,61,40,0.2);
+  }
+
+  /* Ears */
+  .cat-ear {
+    width: 0;
+    height: 0;
+    position: absolute;
+    top: -18px;
+  }
+  .cat-ear.left {
+    left: 14px;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-bottom: 32px solid #d4a870;
+  }
+  .cat-ear.right {
+    right: 14px;
+    border-left: 18px solid transparent;
+    border-right: 18px solid transparent;
+    border-bottom: 32px solid #d4a870;
+  }
+  .cat-ear-inner {
+    width: 0;
+    height: 0;
+    position: absolute;
+  }
+  .cat-ear.left .cat-ear-inner {
+    top: 6px;
+    left: -10px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 18px solid #f0c8b0;
+  }
+  .cat-ear.right .cat-ear-inner {
+    top: 6px;
+    left: -10px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 18px solid #f0c8b0;
+  }
+
+  /* Eyes */
+  .cat-eyes {
+    display: flex;
+    justify-content: center;
+    gap: 22px;
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+  }
+  .cat-eye {
+    width: 22px;
+    height: 22px;
+    background: #4a8a60;
+    border-radius: 50%;
+    position: relative;
+    animation: blink 4s ease-in-out infinite;
+  }
+  .cat-eye::after {
+    content: '';
+    width: 10px;
+    height: 14px;
+    background: #1a1208;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .cat-eye::before {
+    content: '';
+    width: 5px;
+    height: 5px;
+    background: rgba(255,255,255,0.7);
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    z-index: 1;
+  }
+
+  @keyframes blink {
+    0%, 92%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.05); }
+  }
+
+  /* Nose & mouth */
+  .cat-nose {
+    width: 10px;
+    height: 7px;
+    background: #d4687a;
+    border-radius: 50% 50% 40% 40%;
+    position: absolute;
+    top: 58px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .cat-mouth {
+    position: absolute;
+    top: 65px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 30px;
+    height: 10px;
+  }
+  .cat-mouth::before, .cat-mouth::after {
+    content: '';
+    position: absolute;
+    width: 12px;
+    height: 8px;
+    border-bottom: 2px solid #b85060;
+    border-radius: 0 0 50% 50%;
+    top: 0;
+  }
+  .cat-mouth::before { left: 2px; }
+  .cat-mouth::after  { right: 2px; }
+
+  /* Whiskers */
+  .whiskers {
+    position: absolute;
+    top: 52px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 130px;
+  }
+  .whisker {
+    position: absolute;
+    height: 1.5px;
+    background: rgba(107,61,40,0.3);
+    border-radius: 1px;
+  }
+  .whisker.l1 { width: 40px; top: 0;  right: 68px; transform: rotate(-8deg); }
+  .whisker.l2 { width: 44px; top: 8px; right: 68px; transform: rotate(0deg); }
+  .whisker.l3 { width: 38px; top: 16px;right: 68px; transform: rotate(8deg); }
+  .whisker.r1 { width: 40px; top: 0;  left: 68px; transform: rotate(8deg); }
+  .whisker.r2 { width: 44px; top: 8px; left: 68px; transform: rotate(0deg); }
+  .whisker.r3 { width: 38px; top: 16px;left: 68px; transform: rotate(-8deg); }
+
+  .hero-title {
+    text-align: center;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2.2s forwards;
+    margin-bottom: 1rem;
+  }
+  .hero-title .main {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2.8rem, 9vw, 5.5rem);
+    font-weight: 400;
+    color: var(--brown);
+    display: block;
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .hero-title .sub {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: clamp(0.7rem, 1.5vw, 0.85rem);
+    letter-spacing: 0.5em;
+    color: var(--caramel);
+    display: block;
+    margin-top: 0.8rem;
+  }
+
+  .hero-tagline {
+    font-size: clamp(1rem, 2vw, 1.2rem);
+    color: var(--caramel);
+    text-align: center;
+    line-height: 1.9;
+    opacity: 0;
+    animation: fadeUp 0.8s ease 2.8s forwards;
+    margin-top: 1.5rem;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    animation: fadeIn 1s ease 3.5s forwards;
+  }
+  .scroll-hint span {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: var(--caramel);
+    text-transform: uppercase;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 36px;
+    background: linear-gradient(to bottom, var(--caramel), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 1; }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  /* ── CAT PROFILES ── */
+  .section-cats {
+    padding: 6rem 6% 4rem;
+    background: var(--warm);
+  }
+
+  .section-eyebrow {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.5em;
+    color: var(--caramel);
+    text-transform: uppercase;
+    text-align: center;
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .section-heading {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    text-align: center;
+    color: var(--brown);
+    margin-bottom: 0.5rem;
+  }
+  .section-heading em {
+    font-style: italic;
+    color: var(--caramel);
+  }
+
+  .section-sub {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--caramel);
+    margin-bottom: 3.5rem;
+    font-weight: 300;
+  }
+
+  .cats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  @media (max-width: 700px) {
+    .cats-grid { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .cat-card {
+    background: var(--cream);
+    border-radius: 20px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    box-shadow: 0 4px 20px var(--soft-shadow);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .cat-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 36px var(--soft-shadow);
+  }
+
+  .cat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .cat-card.tabby::before   { background: linear-gradient(90deg, #c8845a, #e0a878); }
+  .cat-card.white::before   { background: linear-gradient(90deg, #d0c8e8, #e8e0f0); }
+  .cat-card.black::before   { background: linear-gradient(90deg, #484040, #706060); }
+  .cat-card.calico::before  { background: linear-gradient(90deg, #d09858, #e8b870); }
+  .cat-card.gray::before    { background: linear-gradient(90deg, #9898a8, #b8b8c8); }
+  .cat-card.ginger::before  { background: linear-gradient(90deg, #d87840, #f09858); }
+
+  /* Mini cat avatar per card */
+  .mini-cat {
+    width: 70px;
+    height: 65px;
+    margin: 0 auto 1rem;
+    position: relative;
+  }
+
+  .mini-head {
+    width: 58px;
+    height: 54px;
+    border-radius: 50% 50% 45% 45%;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .mini-ear-l, .mini-ear-r {
+    width: 0; height: 0;
+    position: absolute;
+    top: -10px;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+  }
+  .mini-ear-l { left: 6px; }
+  .mini-ear-r { right: 6px; }
+
+  .tabby .mini-head   { background: linear-gradient(160deg, #d4a060, #b87840); }
+  .tabby .mini-ear-l, .tabby .mini-ear-r { border-bottom: 20px solid #b87840; }
+
+  .white .mini-head   { background: linear-gradient(160deg, #f0ecf0, #d8d0e0); }
+  .white .mini-ear-l, .white .mini-ear-r { border-bottom: 20px solid #d8d0e0; }
+
+  .black .mini-head   { background: linear-gradient(160deg, #585050, #302828); }
+  .black .mini-ear-l, .black .mini-ear-r { border-bottom: 20px solid #302828; }
+
+  .calico .mini-head  { background: linear-gradient(160deg, #e0b878, #c89050); }
+  .calico .mini-ear-l, .calico .mini-ear-r { border-bottom: 20px solid #c89050; }
+
+  .gray .mini-head    { background: linear-gradient(160deg, #a8a8b8, #888898); }
+  .gray .mini-ear-l, .gray .mini-ear-r { border-bottom: 20px solid #888898; }
+
+  .ginger .mini-head  { background: linear-gradient(160deg, #e89050, #c06830); }
+  .ginger .mini-ear-l, .ginger .mini-ear-r { border-bottom: 20px solid #c06830; }
+
+  .mini-eyes {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+  }
+  .mini-eye {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #4a8a60;
+  }
+  .white .mini-eye  { background: #6ab0d0; }
+  .black .mini-eye  { background: #d4a030; }
+  .gray .mini-eye   { background: #88a888; }
+
+  .cat-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.3rem;
+    color: var(--brown);
+    margin-bottom: 0.3rem;
+  }
+
+  .cat-name-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--caramel);
+    display: block;
+    margin-bottom: 0.8rem;
+  }
+
+  .cat-desc {
+    font-size: 0.82rem;
+    color: var(--caramel);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .cat-badge {
+    display: inline-block;
+    margin-top: 0.8rem;
+    padding: 0.25rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+
+  .badge-photo { background: #fde8d8; color: var(--caramel); }
+  .badge-shy   { background: #e8e0f0; color: #7870a8; }
+  .badge-star  { background: #fff0c8; color: #a08020; }
+
+  /* ── PHOTO SPECIAL SECTION ── */
+  .section-gift {
+    padding: 6rem 8%;
+    background: linear-gradient(160deg, #fdf0e4 0%, #f8e8d4 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-gift::before {
+    content: '🐱';
+    position: absolute;
+    font-size: 200px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  .gift-circle {
+    width: 72px;
+    height: 72px;
+    background: var(--peach);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    font-size: 2rem;
+    box-shadow: 0 4px 20px rgba(200,132,90,0.2);
+  }
+
+  .gift-heading {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    color: var(--brown);
+    line-height: 1.3;
+    margin-bottom: 1rem;
+  }
+
+  .gift-heading em {
+    font-style: italic;
+    color: var(--caramel);
+  }
+
+  .gift-desc {
+    font-size: 1rem;
+    line-height: 2;
+    color: var(--caramel);
+    max-width: 480px;
+    margin: 0 auto 2.5rem;
+    font-weight: 300;
+  }
+
+  .gift-desc strong { color: var(--brown); font-weight: 600; }
+
+  /* ── CTA ── */
+  .cta-btn {
+    display: inline-block;
+    padding: 1.1rem 3rem;
+    background: var(--caramel);
+    color: var(--cream);
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 24px rgba(200,132,90,0.3);
+  }
+  .cta-btn:hover {
+    background: var(--brown);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 32px rgba(107,61,40,0.3);
+  }
+
+  .cta-badge {
+    display: block;
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.3em;
+    color: var(--caramel);
+    margin-top: 1rem;
+    text-transform: uppercase;
+  }
+
+  /* ── DETAILS STRIP ── */
+  .details-strip {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    background: var(--warm);
+    border-top: 1px solid rgba(200,132,90,0.15);
+    border-bottom: 1px solid rgba(200,132,90,0.15);
+  }
+  @media (max-width: 600px) { .details-strip { grid-template-columns: 1fr; } }
+  .detail-item {
+    padding: 2.5rem 2rem;
+    text-align: center;
+    border-right: 1px solid rgba(200,132,90,0.15);
+    transition: background 0.3s;
+  }
+  .detail-item:last-child { border-right: none; }
+  .detail-item:hover { background: rgba(200,132,90,0.05); }
+  .detail-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    color: var(--caramel);
+    display: block;
+    margin-bottom: 0.4rem;
+  }
+  .detail-label {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.4em;
+    color: var(--brown);
+    text-transform: uppercase;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 2.5rem 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-top: 1px solid rgba(200,132,90,0.15);
+    background: var(--cream);
+  }
+  .footer-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--brown);
+  }
+  .footer-note {
+    font-size: 0.78rem;
+    color: var(--caramel);
+    font-style: italic;
+  }
+
+  /* Divider */
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 0 8%;
+    margin: 1.5rem 0;
+  }
+  .divider-line { flex: 1; height: 1px; background: linear-gradient(to right, transparent, rgba(200,132,90,0.3), transparent); }
+  .divider-paw {
+    font-size: 0.9rem;
+    opacity: 0.4;
+  }
+</style>
+</head>
+<body>
+
+<nav class="lang-bar">
+  <button class="lang-btn active">EN</button>
+  <button class="lang-btn">中</button>
+  <button class="lang-btn">한</button>
+  <button class="lang-btn">繁</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="paw">🐾</div>
+  <div class="paw">🐾</div>
+  <div class="paw">🐾</div>
+  <div class="paw">🐾</div>
+  <div class="paw">🐾</div>
+  <div class="paw">🐾</div>
+  <div class="paw">🐾</div>
+
+  <span class="invite-tag">A personal invitation</span>
+
+  <p class="friend-line">
+    <strong>Yuna</strong> wants you to meet someone special.
+  </p>
+
+  <!-- Hero cat illustration -->
+  <div class="cat-hero">
+    <div class="cat-face">
+      <div class="cat-ear left"><div class="cat-ear-inner"></div></div>
+      <div class="cat-ear right"><div class="cat-ear-inner"></div></div>
+      <div class="cat-head">
+        <div class="cat-eyes">
+          <div class="cat-eye"></div>
+          <div class="cat-eye"></div>
+        </div>
+        <div class="cat-nose"></div>
+        <div class="cat-mouth"></div>
+        <div class="whiskers">
+          <div class="whisker l1"></div>
+          <div class="whisker l2"></div>
+          <div class="whisker l3"></div>
+          <div class="whisker r1"></div>
+          <div class="whisker r2"></div>
+          <div class="whisker r3"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-title">
+    <span class="main">Cat Cafe MOCHA</span>
+    <span class="sub">猫カフェ MOCHA — Tokyo, Japan</span>
+  </div>
+
+  <p class="hero-tagline">
+    20 cats. Zero stress. Pure Tokyo.
+  </p>
+
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    <span>Meet them</span>
+  </div>
+</section>
+
+<!-- CAT PROFILES -->
+<section class="section-cats">
+  <span class="section-eyebrow">The Residents</span>
+  <h2 class="section-heading">Find your <em>favourite</em></h2>
+  <p class="section-sub">Each cat has a personality. Collect them all.</p>
+
+  <div class="cats-grid">
+    <div class="cat-card tabby">
+      <div class="mini-cat">
+        <div class="mini-ear-l"></div>
+        <div class="mini-ear-r"></div>
+        <div class="mini-head">
+          <div class="mini-eyes">
+            <div class="mini-eye"></div>
+            <div class="mini-eye"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-name">Kinako</div>
+      <span class="cat-name-jp">きなこ · Brown Tabby</span>
+      <p class="cat-desc">Always napping in the sun. Will let you pet him for exactly 3 minutes.</p>
+      <span class="cat-badge badge-star">⭐ Most Popular</span>
+    </div>
+
+    <div class="cat-card white">
+      <div class="mini-cat">
+        <div class="mini-ear-l"></div>
+        <div class="mini-ear-r"></div>
+        <div class="mini-head">
+          <div class="mini-eyes">
+            <div class="mini-eye"></div>
+            <div class="mini-eye"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-name">Shirayuki</div>
+      <span class="cat-name-jp">しらゆき · White</span>
+      <p class="cat-desc">Blue eyes, gentle soul. Loves to sit on laps and watch the world go by.</p>
+      <span class="cat-badge badge-photo">📸 Photo Favourite</span>
+    </div>
+
+    <div class="cat-card black">
+      <div class="mini-cat">
+        <div class="mini-ear-l"></div>
+        <div class="mini-ear-r"></div>
+        <div class="mini-head">
+          <div class="mini-eyes">
+            <div class="mini-eye"></div>
+            <div class="mini-eye"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-name">Kuro</div>
+      <span class="cat-name-jp">くろ · Black</span>
+      <p class="cat-desc">Mysterious and selective. Getting his attention feels like winning a prize.</p>
+      <span class="cat-badge badge-shy">🌙 Rare Encounter</span>
+    </div>
+
+    <div class="cat-card calico">
+      <div class="mini-cat">
+        <div class="mini-ear-l"></div>
+        <div class="mini-ear-r"></div>
+        <div class="mini-head">
+          <div class="mini-eyes">
+            <div class="mini-eye"></div>
+            <div class="mini-eye"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-name">Hana</div>
+      <span class="cat-name-jp">はな · Calico</span>
+      <p class="cat-desc">The social butterfly of the cafe. First to greet every new visitor.</p>
+      <span class="cat-badge badge-star">💛 Friendliest</span>
+    </div>
+
+    <div class="cat-card gray">
+      <div class="mini-cat">
+        <div class="mini-ear-l"></div>
+        <div class="mini-ear-r"></div>
+        <div class="mini-head">
+          <div class="mini-eyes">
+            <div class="mini-eye"></div>
+            <div class="mini-eye"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-name">Sora</div>
+      <span class="cat-name-jp">そら · Gray</span>
+      <p class="cat-desc">Philosopher of the group. Gazes out the window like he knows something you don't.</p>
+      <span class="cat-badge badge-photo">📸 Most Photogenic</span>
+    </div>
+
+    <div class="cat-card ginger">
+      <div class="mini-cat">
+        <div class="mini-ear-l"></div>
+        <div class="mini-ear-r"></div>
+        <div class="mini-head">
+          <div class="mini-eyes">
+            <div class="mini-eye"></div>
+            <div class="mini-eye"></div>
+          </div>
+        </div>
+      </div>
+      <div class="cat-name">Mikan</div>
+      <span class="cat-name-jp">みかん · Ginger</span>
+      <p class="cat-desc">Playful energy, always chasing something. Impossible not to smile at.</p>
+      <span class="cat-badge badge-star">🍊 Most Playful</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider">
+  <div class="divider-line"></div>
+  <span class="divider-paw">🐾</span>
+  <div class="divider-line"></div>
+</div>
+
+<!-- DETAILS STRIP -->
+<div class="details-strip">
+  <div class="detail-item">
+    <span class="detail-num">20+</span>
+    <span class="detail-label">Resident Cats</span>
+  </div>
+  <div class="detail-item">
+    <span class="detail-num">36</span>
+    <span class="detail-label">Locations in Japan</span>
+  </div>
+  <div class="detail-item">
+    <span class="detail-num">∞</span>
+    <span class="detail-label">Good Vibes Only</span>
+  </div>
+</div>
+
+<!-- GIFT SECTION -->
+<section class="section-gift">
+  <div class="gift-circle">📸</div>
+
+  <h2 class="gift-heading">
+    Yuna's gift to you:<br>
+    <em>Private photo time with your favourite cat.</em>
+  </h2>
+
+  <p class="gift-desc">
+    When you arrive, tell the staff you're Yuna's guest.<br><br>
+    They'll take you to a quiet corner — just you and the cat you chose.<br>
+    <strong>10 minutes. No other visitors. Perfect photos.</strong><br><br>
+    This is available exclusively through Yuna's invitation.
+  </p>
+
+  <button class="cta-btn">Book Your Visit</button>
+  <span class="cta-badge">✦ Private Photo Time Included · Yuna's Invitation</span>
+</section>
+
+<footer>
+  <span class="footer-brand">Cat Cafe MOCHA</span>
+  <span class="footer-note">Shared with love by Yuna · Tokyo, Japan</span>
+</footer>
+
+<script>
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>
