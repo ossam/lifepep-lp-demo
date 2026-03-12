@@ -703,9 +703,197 @@
     font-size: 0.9rem;
     opacity: 0.4;
   }
+
+  /* ── WELCOME OVERLAY ── */
+  #welcome-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #fdf5ec 0%, #f8ede0 50%, #f2e4d4 100%);
+    overflow: hidden;
+    cursor: pointer;
+    transition: opacity 0.8s ease;
+  }
+  #welcome-overlay.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .ov-ripple {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(200,132,90,0.2);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%) scale(0.3);
+    animation: ovRipple 4s ease-out infinite;
+  }
+  .ov-ripple:nth-child(1) { width: 200px;  height: 200px;  animation-delay: 0s; }
+  .ov-ripple:nth-child(2) { width: 420px;  height: 420px;  animation-delay: 0.9s; }
+  .ov-ripple:nth-child(3) { width: 660px;  height: 660px;  animation-delay: 1.8s; }
+  .ov-ripple:nth-child(4) { width: 920px;  height: 920px;  animation-delay: 2.7s; }
+  @keyframes ovRipple {
+    0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0.5; }
+    100% { transform: translate(-50%,-50%) scale(1);   opacity: 0; }
+  }
+
+  .ov-particle {
+    position: absolute;
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--caramel);
+    opacity: 0;
+    animation: ovFloatUp 5s ease-in-out infinite;
+  }
+  @keyframes ovFloatUp {
+    0%   { transform: translateY(0) scale(0); opacity: 0; }
+    20%  { opacity: 0.5; transform: scale(1); }
+    80%  { opacity: 0.1; }
+    100% { transform: translateY(-100px) scale(0.5); opacity: 0; }
+  }
+
+  #welcome-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 2.5rem;
+    max-width: 460px;
+  }
+
+  .ov-from {
+    font-size: 1rem;
+    letter-spacing: 0.05em;
+    color: var(--brown);
+    font-style: italic;
+    opacity: 0;
+    animation: ovFadeUp 0.8s ease 0.5s forwards;
+    margin-bottom: 2rem;
+    display: block;
+  }
+
+  .ov-icon {
+    font-size: 2.4rem;
+    opacity: 0;
+    display: block;
+    margin-bottom: 1.5rem;
+    animation: ovFadeUp 0.8s ease 0.9s forwards, ovBounce 1.8s ease 1.7s infinite alternate;
+  }
+  @keyframes ovBounce {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-6px); }
+  }
+
+  .ov-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+    letter-spacing: 0.2em;
+    color: var(--brown);
+    opacity: 0;
+    animation: ovFadeUp 1s ease 1.3s forwards;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .ov-en {
+    font-style: italic;
+    font-size: clamp(1rem, 3vw, 1.15rem);
+    color: var(--caramel);
+    opacity: 0;
+    animation: ovFadeUp 0.8s ease 1.9s forwards;
+    display: block;
+  }
+
+  .ov-gold-line {
+    width: 50px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--caramel), transparent);
+    margin: 1.6rem auto;
+    opacity: 0;
+    animation: ovFadeIn 1s ease 2.3s forwards;
+  }
+
+  .ov-place {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: var(--caramel);
+    opacity: 0;
+    animation: ovFadeUp 0.8s ease 2.5s forwards;
+    margin-bottom: 2.5rem;
+    display: block;
+  }
+
+  .ov-enter {
+    display: inline-block;
+    padding: 0.9rem 2.5rem;
+    border: 1.5px solid rgba(200,132,90,0.5);
+    color: var(--caramel);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.4em;
+    text-transform: uppercase;
+    border-radius: 50px;
+    background: transparent;
+    opacity: 0;
+    animation: ovFadeIn 1s ease 3s forwards;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s, border-color 0.3s;
+  }
+  .ov-enter:hover { background: var(--caramel); color: var(--cream); border-color: var(--caramel); }
+
+  .ov-tap-hint {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: rgba(107,61,40,0.2);
+    margin-top: 1rem;
+    opacity: 0;
+    display: block;
+    animation: ovFadeIn 1s ease 3.8s forwards;
+  }
+
+  @keyframes ovFadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes ovFadeIn {
+    to { opacity: 1; }
+  }
 </style>
 </head>
 <body>
+
+<!-- ── WELCOME OVERLAY ── -->
+<div id="welcome-overlay" onclick="enterLP()">
+  <div class="ov-ripple"></div>
+  <div class="ov-ripple"></div>
+  <div class="ov-ripple"></div>
+  <div class="ov-ripple"></div>
+
+  <div class="ov-particle" style="left:15%;bottom:22%;animation-delay:0s;"></div>
+  <div class="ov-particle" style="left:30%;bottom:15%;animation-delay:1.2s;"></div>
+  <div class="ov-particle" style="left:52%;bottom:20%;animation-delay:0.5s;"></div>
+  <div class="ov-particle" style="left:70%;bottom:12%;animation-delay:2.1s;"></div>
+  <div class="ov-particle" style="left:82%;bottom:26%;animation-delay:0.9s;"></div>
+  <div class="ov-particle" style="left:22%;bottom:8%;animation-delay:2.8s;"></div>
+  <div class="ov-particle" style="left:65%;bottom:18%;animation-delay:1.6s;"></div>
+
+  <div id="welcome-content">
+    <span class="ov-from">Yuna wants you to experience this.</span>
+    <span class="ov-icon">🐱</span>
+    <span class="ov-jp">特別な時間を<br>プレゼント</span>
+    <span class="ov-en">A moment just for you.</span>
+    <div class="ov-gold-line"></div>
+    <span class="ov-place">猫カフェ MOCHA — Tokyo</span>
+    <button class="ov-enter" onclick="enterLP()">Enter ✦ 開く</button>
+    <span class="ov-tap-hint">tap anywhere to enter</span>
+  </div>
+</div>
 
 <nav class="lang-bar">
   <button class="lang-btn active">EN</button>
@@ -909,6 +1097,11 @@
 </footer>
 
 <script>
+  function enterLP() {
+    document.getElementById('welcome-overlay').classList.add('hide');
+    window.scrollTo(0, 0);
+  }
+
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));

@@ -660,9 +660,210 @@
     letter-spacing: 0.3em;
     color: var(--ash);
   }
+
+  /* ── WELCOME OVERLAY ── */
+  #welcome-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #0a0907 0%, #0e0c0a 50%, #0a0907 100%);
+    overflow: hidden;
+    cursor: pointer;
+    transition: opacity 0.8s ease;
+  }
+  #welcome-overlay.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Knife cut line */
+  .ov-cut-line {
+    position: absolute;
+    top: 50%;
+    left: -100%;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(176,168,152,0.25), transparent);
+    animation: ovCutAcross 1.4s cubic-bezier(0.4,0,0.2,1) 0.3s forwards;
+    opacity: 0;
+  }
+  @keyframes ovCutAcross {
+    0%   { left: -100%; opacity: 0; }
+    10%  { opacity: 0.5; }
+    90%  { opacity: 0.25; }
+    100% { left: 100%; opacity: 0; }
+  }
+
+  .ov-ripple {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(196,163,90,0.1);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%) scale(0.3);
+    animation: ovRipple 5s ease-out infinite;
+  }
+  .ov-ripple:nth-child(2) { width: 200px;  height: 200px;  animation-delay: 0s; }
+  .ov-ripple:nth-child(3) { width: 440px;  height: 440px;  animation-delay: 1.2s; }
+  .ov-ripple:nth-child(4) { width: 720px;  height: 720px;  animation-delay: 2.4s; }
+  @keyframes ovRipple {
+    0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0.4; }
+    100% { transform: translate(-50%,-50%) scale(1);   opacity: 0; }
+  }
+
+  .ov-particle {
+    position: absolute;
+    width: 2px; height: 2px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    animation: ovFloatUp 6s ease-in-out infinite;
+  }
+  @keyframes ovFloatUp {
+    0%   { transform: translateY(0) scale(0); opacity: 0; }
+    20%  { opacity: 0.6; transform: scale(1); }
+    80%  { opacity: 0.15; }
+    100% { transform: translateY(-120px) scale(0.5); opacity: 0; }
+  }
+
+  #welcome-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 2.5rem;
+    max-width: 460px;
+  }
+
+  .ov-from {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--silver);
+    opacity: 0;
+    animation: ovFadeUp 0.8s ease 1.6s forwards;
+    margin-bottom: 2rem;
+    display: block;
+  }
+
+  .ov-icon {
+    width: 6px; height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    margin: 0 auto 2rem;
+    opacity: 0;
+    display: block;
+    animation: ovFadeIn 0.5s ease 2s forwards;
+  }
+
+  .ov-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: clamp(1.6rem, 7vw, 2.4rem);
+    letter-spacing: 0.2em;
+    color: var(--cream);
+    opacity: 0;
+    animation: ovFadeUp 1s ease 2.4s forwards;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .ov-en {
+    font-style: italic;
+    font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+    color: var(--silver);
+    opacity: 0;
+    animation: ovFadeUp 0.8s ease 3s forwards;
+    display: block;
+  }
+
+  .ov-gold-line {
+    width: 50px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 1.8rem auto;
+    opacity: 0;
+    animation: ovFadeIn 1s ease 3.4s forwards;
+  }
+
+  .ov-place {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 10px;
+    letter-spacing: 0.5em;
+    color: var(--ash);
+    opacity: 0;
+    animation: ovFadeUp 0.8s ease 3.6s forwards;
+    margin-bottom: 2.5rem;
+    display: block;
+  }
+
+  .ov-enter {
+    display: inline-block;
+    padding: 0.85rem 2.8rem;
+    border: 1px solid rgba(196,163,90,0.4);
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    background: transparent;
+    opacity: 0;
+    animation: ovFadeIn 1s ease 4.1s forwards;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .ov-enter:hover { background: rgba(196,163,90,0.07); border-color: var(--gold); }
+
+  .ov-tap-hint {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: rgba(90,82,72,0.3);
+    margin-top: 1rem;
+    opacity: 0;
+    display: block;
+    animation: ovFadeIn 1s ease 4.9s forwards;
+  }
+
+  @keyframes ovFadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes ovFadeIn {
+    to { opacity: 1; }
+  }
 </style>
 </head>
 <body>
+
+<!-- ── WELCOME OVERLAY ── -->
+<div id="welcome-overlay" onclick="enterLP()">
+  <div class="ov-cut-line"></div>
+  <div class="ov-ripple"></div>
+  <div class="ov-ripple"></div>
+  <div class="ov-ripple"></div>
+
+  <div class="ov-particle" style="left:18%;bottom:22%;animation-delay:0s;"></div>
+  <div class="ov-particle" style="left:35%;bottom:15%;animation-delay:1.5s;"></div>
+  <div class="ov-particle" style="left:53%;bottom:20%;animation-delay:0.6s;"></div>
+  <div class="ov-particle" style="left:70%;bottom:12%;animation-delay:2.2s;"></div>
+  <div class="ov-particle" style="left:83%;bottom:27%;animation-delay:1s;"></div>
+  <div class="ov-particle" style="left:25%;bottom:8%;animation-delay:3s;"></div>
+  <div class="ov-particle" style="left:62%;bottom:18%;animation-delay:1.8s;"></div>
+
+  <div id="welcome-content">
+    <span class="ov-from">James has arranged something rare.</span>
+    <span class="ov-icon"></span>
+    <span class="ov-jp">特別なご予約を<br>ご用意しました</span>
+    <span class="ov-en">A reservation held in your name.</span>
+    <div class="ov-gold-line"></div>
+    <span class="ov-place">鮨 にし岡 — Takanawa, Tokyo</span>
+    <button class="ov-enter" onclick="enterLP()">Enter ✦ 開く</button>
+    <span class="ov-tap-hint">tap anywhere to enter</span>
+  </div>
+</div>
 
 <nav class="lang-bar">
   <button class="lang-btn active">EN</button>
@@ -856,6 +1057,11 @@
 </footer>
 
 <script>
+  function enterLP() {
+    document.getElementById('welcome-overlay').classList.add('hide');
+    window.scrollTo(0, 0);
+  }
+
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', function() {
       document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
