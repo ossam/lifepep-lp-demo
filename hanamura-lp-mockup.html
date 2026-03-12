@@ -516,9 +516,202 @@
   }
 
   .lang-btn:hover, .lang-btn.active { color: var(--gold); }
+
+  /* ── WELCOME OVERLAY ── */
+  #welcome-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(160deg, #0a100d 0%, #0d1a14 50%, #0a1218 100%);
+    overflow: hidden;
+    cursor: pointer;
+    transition: opacity 0.8s ease;
+  }
+  #welcome-overlay.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Ripple rings */
+  .ov-ripple {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(184,153,90,0.15);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%) scale(0.3);
+    animation: ovRipple 4s ease-out infinite;
+  }
+  .ov-ripple:nth-child(1) { width: 200px;  height: 200px;  animation-delay: 0s; }
+  .ov-ripple:nth-child(2) { width: 420px;  height: 420px;  animation-delay: 0.9s; }
+  .ov-ripple:nth-child(3) { width: 660px;  height: 660px;  animation-delay: 1.8s; }
+  .ov-ripple:nth-child(4) { width: 920px;  height: 920px;  animation-delay: 2.7s; }
+  @keyframes ovRipple {
+    0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0.5; }
+    100% { transform: translate(-50%,-50%) scale(1);   opacity: 0; }
+  }
+
+  /* Gold floating particles */
+  .ov-particle {
+    position: absolute;
+    width: 3px; height: 3px;
+    border-radius: 50%;
+    background: var(--gold);
+    opacity: 0;
+    animation: floatUp 5s ease-in-out infinite;
+  }
+  @keyframes floatUp {
+    0%   { transform: translateY(0) scale(0); opacity: 0; }
+    20%  { opacity: 0.7; transform: scale(1); }
+    80%  { opacity: 0.2; }
+    100% { transform: translateY(-100px) scale(0.5); opacity: 0; }
+  }
+
+  #welcome-content {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: 0 2.5rem;
+    max-width: 480px;
+  }
+
+  .ov-from {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    color: var(--mist);
+    opacity: 0;
+    animation: ovFadeUp 0.8s ease 0.5s forwards;
+    margin-bottom: 2rem;
+    display: block;
+  }
+
+  .ov-icon {
+    font-size: 2rem;
+    opacity: 0;
+    display: block;
+    margin-bottom: 1.5rem;
+    color: var(--gold);
+    animation: ovFadeUp 0.8s ease 0.9s forwards, ovGlow 2s ease 1.7s infinite alternate;
+  }
+  @keyframes ovGlow {
+    from { filter: drop-shadow(0 0 4px rgba(184,153,90,0.3)); }
+    to   { filter: drop-shadow(0 0 16px rgba(184,153,90,0.9)); }
+  }
+
+  .ov-jp {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: clamp(1.6rem, 7vw, 2.6rem);
+    letter-spacing: 0.2em;
+    color: var(--washi);
+    opacity: 0;
+    animation: ovFadeUp 1s ease 1.3s forwards;
+    margin-bottom: 0.6rem;
+    display: block;
+  }
+
+  .ov-en {
+    font-family: 'IM Fell English', serif;
+    font-style: italic;
+    font-size: clamp(1rem, 3.5vw, 1.3rem);
+    color: var(--gold);
+    opacity: 0;
+    animation: ovFadeUp 0.8s ease 1.9s forwards;
+    display: block;
+    margin-bottom: 0;
+  }
+
+  .ov-gold-line {
+    width: 60px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 1.8rem auto;
+    opacity: 0;
+    animation: ovFadeIn 1s ease 2.3s forwards;
+  }
+
+  .ov-place {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    color: var(--mist);
+    opacity: 0;
+    animation: ovFadeUp 0.8s ease 2.5s forwards;
+    margin-bottom: 2.5rem;
+    display: block;
+  }
+
+  .ov-enter {
+    display: inline-block;
+    padding: 0.85rem 2.8rem;
+    border: 1px solid rgba(184,153,90,0.45);
+    color: var(--gold);
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 11px;
+    letter-spacing: 0.5em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: ovFadeIn 1s ease 3s forwards;
+    background: transparent;
+    cursor: pointer;
+    transition: background 0.3s, border-color 0.3s;
+  }
+  .ov-enter:hover { background: rgba(184,153,90,0.08); border-color: var(--gold); }
+
+  .ov-tap-hint {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: 9px;
+    letter-spacing: 0.35em;
+    color: rgba(200,191,176,0.25);
+    margin-top: 1rem;
+    opacity: 0;
+    display: block;
+    animation: ovFadeIn 1s ease 3.8s forwards;
+  }
+
+  @keyframes ovFadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes ovFadeIn {
+    to { opacity: 1; }
+  }
 </style>
 </head>
 <body>
+
+<!-- ── WELCOME OVERLAY ── -->
+<div id="welcome-overlay" onclick="enterLP()">
+  <div class="ov-ripple"></div>
+  <div class="ov-ripple"></div>
+  <div class="ov-ripple"></div>
+  <div class="ov-ripple"></div>
+
+  <div class="ov-particle" style="left:18%;bottom:25%;animation-delay:0s;"></div>
+  <div class="ov-particle" style="left:32%;bottom:18%;animation-delay:1.2s;"></div>
+  <div class="ov-particle" style="left:50%;bottom:22%;animation-delay:0.4s;"></div>
+  <div class="ov-particle" style="left:67%;bottom:14%;animation-delay:2s;"></div>
+  <div class="ov-particle" style="left:80%;bottom:28%;animation-delay:0.8s;"></div>
+  <div class="ov-particle" style="left:24%;bottom:10%;animation-delay:2.8s;"></div>
+  <div class="ov-particle" style="left:72%;bottom:20%;animation-delay:1.6s;"></div>
+
+  <div id="welcome-content">
+    <span class="ov-from">A gift from Sarah, just for you.</span>
+    <span class="ov-icon">✦</span>
+    <span class="ov-jp">特別な体験を<br>プレゼント</span>
+    <span class="ov-en">A special experience awaits you.</span>
+    <div class="ov-gold-line"></div>
+    <span class="ov-place">花紫　— 山中温泉</span>
+    <button class="ov-enter" onclick="enterLP()">Enter ✦ 開く</button>
+    <span class="ov-tap-hint">tap anywhere to enter</span>
+  </div>
+</div>
 
 <!-- Language switcher -->
 <nav class="lang-bar">
@@ -660,6 +853,12 @@
 </footer>
 
 <script>
+  // Welcome overlay dismiss
+  function enterLP() {
+    document.getElementById('welcome-overlay').classList.add('hide');
+    window.scrollTo(0, 0);
+  }
+
   // Language switcher (demo)
   document.querySelectorAll('.lang-btn').forEach(btn => {
     btn.addEventListener('click', function() {
