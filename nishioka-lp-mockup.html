@@ -661,6 +661,72 @@
     color: var(--ash);
   }
 
+  /* ── SAKE SECTION ── */
+  .section-sake {
+    padding: 8rem 8%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    border-top: 1px solid rgba(90,82,72,0.2);
+    background: linear-gradient(180deg, #0d0b09 0%, #0a0907 100%);
+  }
+  @media (max-width: 768px) {
+    .section-sake { grid-template-columns: 1fr; gap: 3rem; }
+  }
+
+  .sake-name {
+    font-family: 'Noto Serif JP', serif;
+    font-weight: 200;
+    font-size: clamp(1.3rem, 2.5vw, 1.9rem);
+    letter-spacing: 0.15em;
+    color: var(--cream);
+    margin: 2rem 0 0.3rem;
+  }
+
+  .sake-roman {
+    font-size: 0.8rem;
+    letter-spacing: 0.35em;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 1.8rem;
+  }
+
+  .sake-desc {
+    font-size: 1rem;
+    line-height: 2.1;
+    color: var(--silver);
+    font-weight: 300;
+    margin-bottom: 1.8rem;
+  }
+
+  .sake-note {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--ash);
+    line-height: 1.9;
+    border-left: 2px solid rgba(139,26,26,0.6);
+    padding-left: 1.2rem;
+  }
+
+  .sake-photo {
+    aspect-ratio: 3/4;
+    overflow: hidden;
+    border: 1px solid rgba(90,82,72,0.25);
+    position: relative;
+  }
+  .sake-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    filter: brightness(0.8) contrast(1.05);
+    transition: transform 0.9s ease;
+    display: block;
+  }
+  .sake-photo:hover img { transform: scale(1.04); }
+
   /* ── WELCOME OVERLAY ── */
   #welcome-overlay {
     position: fixed;
@@ -989,6 +1055,32 @@
       <span class="sushi-label">Ikura · Salmon Roe</span>
     </div>
 
+  </div>
+</section>
+
+<!-- SAKE SECTION -->
+<section class="section-sake">
+  <div>
+    <span class="section-num">02 ── A Private Selection</span>
+    <h2 class="section-label">
+      One bottle,<br>
+      <em>held for you.</em>
+    </h2>
+    <p class="sake-name">而今　純米大吟醸　山田錦</p>
+    <p class="sake-roman">Jikon · Junmai Daiginjo · Yamadanishiki</p>
+    <p class="sake-desc">
+      Brewed in Mie by Kimoto Shuzō in quantities so small
+      that most bottles never leave the prefecture.
+      而今 is not purchased — it is obtained through trust,
+      built slowly over years.
+    </p>
+    <p class="sake-note">
+      James asked Chef Nishioka to hold a bottle before your reservation was confirmed.
+      It will be waiting at the counter, already chilled.
+    </p>
+  </div>
+  <div class="sake-photo">
+    <img src="images/nishioka-sake-bottle.jpg" alt="而今 純米大吟醸">
   </div>
 </section>
 
