@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>お店の方へ | OSHINOMISE</title>
+<meta name="description" content="ファンからの紹介で、自分の店に合うお客さんを呼ぼう。OSHINOMISEは、常連のファンが名前を出して推す信頼ベースの紹介プラットフォームです。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Noto+Serif+JP:wght@200;300;400&family=Cormorant+Garamond:ital,wght@0,300;1,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --paper:   #F8F5F0;
+  --paper2:  #F0EBE3;
+  --paper3:  #E8E0D5;
+  --ink:     #1C1814;
+  --ink2:    #52483E;
+  --ink3:    #8A8078;
+  --accent:  #C8600A;
+  --accent2: #9A4808;
+  --rule:    rgba(28,24,20,0.12);
+  --rule2:   rgba(28,24,20,0.06);
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'Noto Serif JP', serif;
+  overflow-x: hidden;
+}
+
+/* MASTHEAD */
+.masthead {
+  border-bottom: 3px solid var(--ink);
+  padding: 1.2rem 1.5rem 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.masthead-service {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .15em;
+  color: var(--ink3);
+  text-transform: uppercase;
+}
+.masthead-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.masthead-logo span { color: var(--accent); }
+.masthead-date {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--ink3);
+  text-align: right;
+}
+
+/* HERO */
+.hero-header {
+  border-bottom: 1px solid var(--rule);
+  padding: 3.5rem 1.5rem 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.hero-bg-text {
+  position: absolute;
+  top: -0.15em;
+  right: -0.05em;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(7rem, 38vw, 15rem);
+  font-weight: 700;
+  color: rgba(28,24,20,0.04);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: -.04em;
+}
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .35em;
+  color: var(--accent);
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  margin-bottom: 1.8rem;
+  position: relative;
+}
+.hero-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 1px;
+  background: var(--accent);
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.9rem, 8.5vw, 2.8rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -.02em;
+  color: var(--ink);
+  margin-bottom: 1rem;
+  position: relative;
+}
+.hero-title em {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--accent);
+}
+.hero-subtitle {
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: clamp(.95rem, 4vw, 1.08rem);
+  line-height: 2;
+  color: var(--ink2);
+  letter-spacing: .08em;
+  margin-bottom: 2rem;
+  position: relative;
+  max-width: 32em;
+}
+.hero-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.05rem, 4.5vw, 1.25rem);
+  line-height: 1.75;
+  color: var(--ink2);
+  border-left: 3px solid var(--accent);
+  padding-left: 1.2rem;
+  position: relative;
+}
+
+/* STATS BAR */
+.stats-bar {
+  border-bottom: 1px solid var(--rule);
+  display: flex;
+}
+.stat {
+  flex: 1;
+  padding: 1.1rem .8rem;
+  border-right: 1px solid var(--rule);
+  text-align: center;
+}
+.stat:last-child { border-right: none; }
+.stat-num {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 6.5vw, 2rem);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1;
+  display: block;
+  margin-bottom: .35rem;
+}
+.stat-num span { color: var(--accent); font-size: .65em; }
+.stat-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .18em;
+  color: var(--ink3);
+  text-transform: uppercase;
+}
+
+/* SECTION HEAD */
+.section-head {
+  padding: 2.2rem 1.5rem .8rem;
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+.section-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .35em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.section-rule { flex: 1; height: 1px; background: var(--rule); }
+.section-count {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--ink3);
+}
+
+/* PROBLEM / SOLUTION */
+.essay {
+  padding: 2.5rem 1.5rem 2.2rem;
+  border-bottom: 1px solid var(--rule);
+}
+.essay-lead {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: clamp(1.4rem, 6vw, 1.85rem);
+  line-height: 1.4;
+  color: var(--ink);
+  letter-spacing: -.005em;
+  margin-bottom: 1.4rem;
+}
+.essay-lead em { font-style: italic; font-weight: 400; color: var(--ink3); }
+.essay-body {
+  font-weight: 300;
+  font-size: clamp(.9rem, 3.8vw, 1rem);
+  line-height: 2.1;
+  color: var(--ink2);
+  letter-spacing: .08em;
+  margin-bottom: 1rem;
+}
+
+.pain-list {
+  margin-top: 1.5rem;
+  list-style: none;
+}
+.pain-item {
+  display: flex;
+  align-items: flex-start;
+  gap: .9rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--rule);
+}
+.pain-item:last-child { border-bottom: 1px solid var(--rule); }
+.pain-mark {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--accent);
+  flex-shrink: 0;
+  margin-top: 2px;
+  letter-spacing: .1em;
+}
+.pain-text {
+  font-weight: 300;
+  font-size: clamp(.88rem, 3.6vw, .98rem);
+  line-height: 1.8;
+  color: var(--ink2);
+  letter-spacing: .06em;
+}
+
+/* FLOW STEPS */
+.flow-list { padding: 0 0 1rem; }
+.flow-step {
+  border-bottom: 1px solid var(--rule);
+  padding: 1.8rem 1.5rem;
+}
+.flow-inner {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+}
+.flow-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 700;
+  color: rgba(28,24,20,.08);
+  line-height: 1;
+  min-width: 2.2rem;
+  margin-top: -4px;
+  flex-shrink: 0;
+}
+.flow-info { flex: 1; min-width: 0; }
+.flow-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .3em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: .5rem;
+}
+.flow-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.25rem, 5.5vw, 1.55rem);
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ink);
+  letter-spacing: -.01em;
+  margin-bottom: .6rem;
+}
+.flow-desc {
+  font-weight: 200;
+  font-size: clamp(.9rem, 3.8vw, 1rem);
+  line-height: 2;
+  color: var(--ink2);
+  letter-spacing: .08em;
+}
+
+/* FAQ */
+.faq-section { padding: 2rem 1.5rem; border-bottom: 1px solid var(--rule); }
+.faq-item {
+  border-top: 1px solid var(--rule);
+  padding: 1.2rem 0;
+}
+.faq-item:last-child { border-bottom: 1px solid var(--rule); }
+.faq-q {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+  font-size: clamp(1rem, 4.2vw, 1.1rem);
+  color: var(--ink);
+  margin-bottom: .6rem;
+  display: flex;
+  align-items: baseline;
+  gap: .7rem;
+}
+.faq-q::before {
+  content: 'Q';
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .1em;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.faq-a {
+  font-weight: 300;
+  font-size: clamp(.88rem, 3.7vw, .98rem);
+  line-height: 1.9;
+  color: var(--ink2);
+  letter-spacing: .06em;
+  padding-left: 1.4rem;
+}
+
+/* CONTACT FORM (DARK) */
+.contact-section {
+  background: var(--ink);
+  padding: 3.2rem 1.5rem;
+  color: var(--paper);
+  position: relative;
+  overflow: hidden;
+}
+.contact-bg-text {
+  position: absolute;
+  bottom: -0.1em;
+  right: -0.05em;
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(5rem, 24vw, 10rem);
+  font-weight: 400;
+  color: rgba(248,245,240,0.04);
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.contact-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .35em;
+  color: rgba(248,245,240,.5);
+  text-transform: uppercase;
+  margin-bottom: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: .8rem;
+  position: relative;
+}
+.contact-eyebrow::before {
+  content: '';
+  display: block;
+  width: 28px; height: 1px;
+  background: var(--accent);
+}
+.contact-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.7rem, 8vw, 2.4rem);
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--paper);
+  letter-spacing: -.01em;
+  margin-bottom: 1.3rem;
+  position: relative;
+}
+.contact-heading em { font-style: italic; color: rgba(248,245,240,.55); }
+.contact-body {
+  font-weight: 200;
+  font-size: clamp(.9rem, 3.8vw, 1rem);
+  line-height: 2.1;
+  color: rgba(248,245,240,.65);
+  letter-spacing: .1em;
+  margin-bottom: 2.2rem;
+  position: relative;
+}
+
+/* FORM */
+.form {
+  position: relative;
+  display: grid;
+  gap: 1.4rem;
+}
+.form-field { display: block; }
+.form-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .25em;
+  color: rgba(248,245,240,.5);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: .5rem;
+}
+.form-label .req { color: var(--accent); margin-left: .3rem; }
+.form-input,
+.form-textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(248,245,240,.25);
+  padding: .7rem 0;
+  color: var(--paper);
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: 15px;
+  letter-spacing: .05em;
+  outline: none;
+  transition: border-color .25s ease;
+  border-radius: 0;
+}
+.form-input:focus,
+.form-textarea:focus { border-bottom-color: var(--accent); }
+.form-input::placeholder,
+.form-textarea::placeholder { color: rgba(248,245,240,.3); }
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.8;
+}
+.form-submit {
+  margin-top: 1rem;
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: 1px solid rgba(248,245,240,.3);
+  padding: 1.15rem 1.5rem;
+  text-align: center;
+  font-family: 'Noto Serif JP', serif;
+  font-weight: 300;
+  font-size: clamp(.9rem, 3.8vw, 1rem);
+  letter-spacing: .25em;
+  color: var(--paper);
+  cursor: pointer;
+  transition: all .3s ease;
+  border-radius: 0;
+}
+.form-submit:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  letter-spacing: .3em;
+}
+.form-note {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .15em;
+  color: rgba(248,245,240,.4);
+  text-align: center;
+  margin-top: 1rem;
+  line-height: 1.8;
+}
+
+/* FORM SUCCESS */
+.form-success {
+  display: none;
+  padding: 2rem 1.5rem;
+  border: 1px solid var(--accent);
+  text-align: center;
+}
+.form-success.show { display: block; }
+.form-success-title {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--paper);
+  margin-bottom: .6rem;
+}
+.form-success-body {
+  font-size: .88rem;
+  color: rgba(248,245,240,.65);
+  line-height: 1.9;
+  letter-spacing: .06em;
+  font-weight: 300;
+}
+
+/* FOOTER */
+footer {
+  border-top: 3px solid var(--ink);
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+.footer-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+  text-decoration: none;
+}
+.footer-logo span { color: var(--accent); }
+.footer-copy {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .15em;
+  color: var(--ink3);
+}
+
+/* REVEAL */
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity .7s ease, transform .7s ease;
+}
+.reveal.in { opacity: 1; transform: translateY(0); }
+</style>
+</head>
+<body>
+
+<!-- MASTHEAD -->
+<header class="masthead">
+  <span class="masthead-service">FOR STORES</span>
+  <a href="index.html" class="masthead-logo">OSHI<span>.</span>NOMISE</a>
+  <div class="masthead-date">Business<br>Inquiry</div>
+</header>
+
+<!-- HERO -->
+<div class="hero-header">
+  <div class="hero-bg-text">店</div>
+
+  <p class="hero-eyebrow">For Store Owners</p>
+
+  <h1 class="hero-title">
+    ファンからの紹介で、<br>
+    <em>自分の店に合うお客さんを呼ぼう。</em>
+  </h1>
+
+  <p class="hero-subtitle">
+    広告で集めた「とりあえずの客」ではなく、<br>
+    あなたの店を本気で好きなファンが、その世界観を理解した人を連れてきます。
+  </p>
+</div>
+
+<!-- PROBLEM -->
+<div class="section-head reveal">
+  <span class="section-label">The Problem</span>
+  <div class="section-rule"></div>
+  <span class="section-count">— 01</span>
+</div>
+<section class="essay reveal">
+  <h2 class="essay-lead">
+    広告は一過性のもの、<br>
+    <em>信頼は積み重ねるもの。</em>
+  </h2>
+  <p class="essay-body">
+    広告は出し続けなければ止まる。レビューサイトの点数に一喜一憂し、営業電話に時間を奪われる。そのあいだ、本当に大切にしたい常連客と向き合う時間は減っていく。
+  </p>
+
+  <ul class="pain-list">
+    <li class="pain-item">
+      <span class="pain-mark">02 ——</span>
+      <p class="pain-text">広告を止めると客足も止まる、終わらないループ</p>
+    </li>
+    <li class="pain-item">
+      <span class="pain-mark">03 ——</span>
+      <p class="pain-text">点数・レビュー対応で世界観が守れない</p>
+    </li>
+    <li class="pain-item">
+      <span class="pain-mark">04 ——</span>
+      <p class="pain-text">「本当に来てほしい客」と「来る客」がズレる</p>
+    </li>
+  </ul>
+</section>
+
+<!-- SOLUTION -->
+<div class="section-head reveal">
+  <span class="section-label">The Solution</span>
+  <div class="section-rule"></div>
+  <span class="section-count">— 02</span>
+</div>
+<section class="essay reveal">
+  <h2 class="essay-lead">
+    ファンが、名前を出して推す。<br>
+    <em>それだけで、店は育っていく。</em>
+  </h2>
+  <p class="essay-body">
+    OSHINOMISEは、あなたの店の常連ファンが、純粋に推したい店として紹介するプラットフォーム。広告でもPRでもないから、読む人に届きます。
+  </p>
+  <p class="essay-body">
+    あなたの店を本当に好きな人の言葉が、世界観を共有できる新しい客を静かに連れてくる。それがOSHINOMISEの仕組みです。
+  </p>
+</section>
+
+<!-- FLOW -->
+<div class="section-head reveal">
+  <span class="section-label">How It Works</span>
+  <div class="section-rule"></div>
+  <span class="section-count">— 03</span>
+</div>
+<div class="flow-list">
+  <div class="flow-step reveal">
+    <div class="flow-inner">
+      <span class="flow-num">01</span>
+      <div class="flow-info">
+        <p class="flow-label">Inquiry</p>
+        <h3 class="flow-title">お問い合わせ</h3>
+        <p class="flow-desc">
+          下記フォームからご連絡ください。店舗情報と、可能であれば常連ファンの方の心当たりも。
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="flow-step reveal">
+    <div class="flow-inner">
+      <span class="flow-num">02</span>
+      <div class="flow-info">
+        <p class="flow-label">Matching</p>
+        <h3 class="flow-title">ファンとマッチング</h3>
+        <p class="flow-desc">
+          あなたの店を本当に推したいファンと繋ぎます。すでに常連の方でも、こちらから紹介することも可能です。
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="flow-step reveal">
+    <div class="flow-inner">
+      <span class="flow-num">03</span>
+      <div class="flow-info">
+        <p class="flow-label">Editorial</p>
+        <h3 class="flow-title">紹介ページを制作</h3>
+        <p class="flow-desc">
+          ファンの言葉をもとに、世界観を大切にしたエディトリアルな紹介ページを無料で制作します。
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="flow-step reveal">
+    <div class="flow-inner">
+      <span class="flow-num">04</span>
+      <div class="flow-info">
+        <p class="flow-label">Launch</p>
+        <h3 class="flow-title">公開・運用</h3>
+        <p class="flow-desc">
+          OSHINOMISE上に公開。手数料・月額・成果報酬は一切発生しません。
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="section-head reveal">
+  <span class="section-label">FAQ</span>
+  <div class="section-rule"></div>
+  <span class="section-count">— 04</span>
+</div>
+<section class="faq-section reveal">
+  <div class="faq-item">
+    <p class="faq-q">本当に無料なんですか？</p>
+    <p class="faq-a">現時点では無料です。掲載料・初期費用・月額、すべていただいていません。将来的なマネタイズモデルはこれから設計していきますが、導入いただいたお店に不利益のないかたちで進めていく予定です。</p>
+  </div>
+  <div class="faq-item">
+    <p class="faq-q">どうして今は無料なんですか？</p>
+    <p class="faq-a">OSHINOMISEは、ファンが名前を出して推すからこそ信頼が生まれる、という原則を大切にしています。まずはその仕組みを丁寧に育てることを優先したいので、現時点では費用をいただかずに運営しています。</p>
+  </div>
+  <div class="faq-item">
+    <p class="faq-q">どんなお店が対象ですか？</p>
+    <p class="faq-a">業種は問いません。ただし「常連客が本気で推したくなる」店であることが前提です。世界観があり、誰かのファンがいる店を歓迎しています。</p>
+  </div>
+  <div class="faq-item">
+    <p class="faq-q">掲載までどのくらいかかりますか？</p>
+    <p class="faq-a">お問い合わせから公開まで、おおよそ2〜4週間が目安です。ファンの方との調整やページ制作の状況により前後します。</p>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="section-head reveal" style="background:var(--ink); border-bottom:1px solid rgba(248,245,240,.1);">
+  <span class="section-label" style="color:var(--accent);">Contact</span>
+  <div class="section-rule" style="background:rgba(248,245,240,.15);"></div>
+  <span class="section-count" style="color:rgba(248,245,240,.4);">— 05</span>
+</div>
+<section class="contact-section reveal" id="contact">
+  <p class="contact-bg-text">inquiry</p>
+
+  <p class="contact-eyebrow">お問い合わせ</p>
+
+  <h2 class="contact-heading">
+    まずは気軽に、<br>
+    <em>お話しましょう。</em>
+  </h2>
+
+  <p class="contact-body">
+    ご質問だけでも歓迎です。<br>
+    いただいた内容は担当者がすべて拝見し、3営業日以内にお返事します。
+  </p>
+
+  <!--
+    FORMの送信先:
+    Formspree / Google Forms / 自前APIなどに action を差し替えてください。
+    現在はデモ用の JS 処理でサクセスメッセージを出すようになっています。
+  -->
+  <form class="form" id="contact-form" action="#" method="POST" novalidate>
+    <div class="form-field">
+      <label class="form-label" for="store">店名<span class="req">*</span></label>
+      <input class="form-input" type="text" id="store" name="store" required placeholder="例) shivago">
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="name">ご担当者名<span class="req">*</span></label>
+      <input class="form-input" type="text" id="name" name="name" required placeholder="山田 太郎">
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="email">メールアドレス<span class="req">*</span></label>
+      <input class="form-input" type="email" id="email" name="email" required placeholder="you@example.com">
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="area">エリア</label>
+      <input class="form-input" type="text" id="area" name="area" placeholder="例) 長野県小諸市">
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="category">業種</label>
+      <input class="form-input" type="text" id="category" name="category" placeholder="例) カフェ / マッサージ / レストラン">
+    </div>
+
+    <div class="form-field">
+      <label class="form-label" for="message">メッセージ</label>
+      <textarea class="form-textarea" id="message" name="message" placeholder="お店のことや、ご質問などご自由にお書きください。"></textarea>
+    </div>
+
+    <button type="submit" class="form-submit">送信する →</button>
+
+    <p class="form-note">
+      送信いただいた情報は、お問い合わせ対応の目的のみに使用します。
+    </p>
+  </form>
+
+  <div class="form-success" id="form-success">
+    <p class="form-success-title">Thank you.</p>
+    <p class="form-success-body">
+      お問い合わせありがとうございます。<br>
+      3営業日以内にご連絡いたします。
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="footer-logo">OSHI<span>.</span>NOMISE</a>
+  <p class="footer-copy">© 2026 OSHINOMISE. All rights reserved.</p>
+</footer>
+
+<script>
+// REVEAL
+const io = new IntersectionObserver(entries =>
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }),
+  { threshold: 0.1, rootMargin: '0px 0px -20px 0px' }
+);
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// FORM (デモ用: 実際に送信する際は action を差し替えて、この handler を外すか adapt してください)
+const form = document.getElementById('contact-form');
+const success = document.getElementById('form-success');
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  // 簡易バリデーション
+  const required = form.querySelectorAll('[required]');
+  let ok = true;
+  required.forEach(el => { if (!el.value.trim()) ok = false; });
+  if (!ok) {
+    alert('必須項目をご入力ください。');
+    return;
+  }
+  // デモ: サクセス表示
+  form.style.display = 'none';
+  success.classList.add('show');
+  success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+});
+</script>
+</body>
+</html>
